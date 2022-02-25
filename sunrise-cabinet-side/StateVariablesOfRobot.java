@@ -37,7 +37,7 @@ public class StateVariablesOfRobot {
 		{
 			dabak.sendCommand(s);
 		}
-		MatlabToolboxServer.daCommand=""; // clear the command
+		ToolboxServer.daCommand=""; // clear the command
     	
     }
     
@@ -56,13 +56,13 @@ public class StateVariablesOfRobot {
 		{
 			dabak.sendCommand(s);
 		}
-		MatlabToolboxServer.daCommand=""; // clear the command
+		ToolboxServer.daCommand=""; // clear the command
     	
     }
     
     public void sendEEFforcesToClient() {
     	
-		ForceSensorData cforce = _lbr.getExternalForceTorque(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		ForceSensorData cforce = _lbr.getExternalForceTorque(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		
 		String 	cmdforce=Double.toString(cforce.getForce().getX())
 				+"_"+Double.toString(cforce.getForce().getY())
@@ -72,12 +72,12 @@ public class StateVariablesOfRobot {
 		{
 			dabak.sendCommand(cmdforce);
 		}
-		MatlabToolboxServer.daCommand=""; // clear the command
+		ToolboxServer.daCommand=""; // clear the command
     }
     
     public void sendEEFMomentsToClient() {
     	
-		ForceSensorData cforce = _lbr.getExternalForceTorque(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		ForceSensorData cforce = _lbr.getExternalForceTorque(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		
 		String 	cmdforce=Double.toString(cforce.getTorque().getX())
 				+"_"+Double.toString(cforce.getTorque().getY())
@@ -87,7 +87,7 @@ public class StateVariablesOfRobot {
 		{
 			dabak.sendCommand(cmdforce);
 		}
-		MatlabToolboxServer.daCommand=""; // clear the command
+		ToolboxServer.daCommand=""; // clear the command
     }
 
     public void sendJointsPositionsToClient() {
@@ -104,7 +104,7 @@ public class StateVariablesOfRobot {
 		{
 			dabak.sendCommand(s);
 		}
-		MatlabToolboxServer.daCommand=""; // clear the command
+		ToolboxServer.daCommand=""; // clear the command
 
 
 		
@@ -114,7 +114,7 @@ public class StateVariablesOfRobot {
 		// This functions sends the end effector position to the client
     	String cmdPos="";
 		// Read Cartesian position data
-		Frame daframe= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		cmdPos= 
 		Double.toString(daframe.getX())
 				+"_"+Double.toString(daframe.getY())
@@ -128,7 +128,7 @@ public class StateVariablesOfRobot {
 		{
 			dabak.sendCommand(cmdPos);
 		}
-		MatlabToolboxServer.daCommand=""; // clear the command	
+		ToolboxServer.daCommand=""; // clear the command	
 	}
     
 

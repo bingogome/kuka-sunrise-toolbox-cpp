@@ -44,7 +44,7 @@ import com.kuka.roboticsAPI.geometricModel.Tool;
 import com.kuka.roboticsAPI.geometricModel.math.XyzAbcTransformation;
 
  
-public class MatlabToolboxServer extends RoboticsAPIApplication
+public class ToolboxServer extends RoboticsAPIApplication
 {
     private LBR _lbr; 
 	private Controller kuka_Sunrise_Cabinet_1;
@@ -791,7 +791,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
 
         for(int i=1;i<7;i++)
         {
-        	MatlabToolboxServer.jpos[i]=
+        	ToolboxServer.jpos[i]=
         	initialPosition.get(i);
         }
 
@@ -803,13 +803,13 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
 
         aSmartServoMotion.setMinimumTrajectoryExecutionTime(20e-3);
         getLogger().info("Starting SmartServo motion in position control mode");
-        MatlabToolboxServer._toolAttachedToLBR.moveAsync(aSmartServoMotion);
+        ToolboxServer._toolAttachedToLBR.moveAsync(aSmartServoMotion);
 
         getLogger().info("Get the runtime of the SmartServo motion");
         ISmartServoRuntime theSmartServoRuntime = aSmartServoMotion
                 .getRuntime();
 
-        Frame aFrame = theSmartServoRuntime.getCurrentCartesianDestination(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+        Frame aFrame = theSmartServoRuntime.getCurrentCartesianDestination(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
         Frame destFrame = aFrame.copyWithRedundancy();
         // Initiate the initial position 
         EEfServoPos[0]=aFrame.getX();
@@ -825,7 +825,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         	{
         		theSmartServoRuntime.updateWithRealtimeSystem();
         		Frame msrPose = theSmartServoRuntime
-                        .getCurrentCartesianDestination(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+                        .getCurrentCartesianDestination(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
                 Thread.sleep(1);
                 destFrame.setX(EEfServoPos[0]);
                 destFrame.setY(EEfServoPos[1]);
@@ -861,13 +861,13 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         aDirectServoMotion.setMinimumTrajectoryExecutionTime(40e-3);
 
         getLogger().info("Starting DirectServo motion in position control mode");
-        MatlabToolboxServer._toolAttachedToLBR.moveAsync(aDirectServoMotion);
+        ToolboxServer._toolAttachedToLBR.moveAsync(aDirectServoMotion);
 
         getLogger().info("Get the runtime of the DirectServo motion");
         IDirectServoRuntime theDirectServoRuntime = aDirectServoMotion
                 .getRuntime();
 
-        Frame aFrame = theDirectServoRuntime.getCurrentCartesianDestination(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+        Frame aFrame = theDirectServoRuntime.getCurrentCartesianDestination(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
         Frame destFrame = aFrame.copyWithRedundancy();
         // Initiate the initial position 
         EEfServoPos[0]=aFrame.getX();
@@ -892,7 +892,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
                 // Synchronize with the realtime system
                 theDirectServoRuntime.updateWithRealtimeSystem();
                 Frame msrPose = theDirectServoRuntime
-                        .getCurrentCartesianDestination(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+                        .getCurrentCartesianDestination(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 
                 if (doDebugPrints)
                 {
@@ -957,7 +957,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
      */
     public static void main(String[] args)
     {
-        MatlabToolboxServer app = new MatlabToolboxServer();
+        ToolboxServer app = new ToolboxServer();
         app.runApplication();
     }
 

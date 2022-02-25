@@ -76,7 +76,7 @@ public class SmartServoWithImpedence
 					
 					j++;
 				}
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 				
 		}
 		return val;
@@ -161,7 +161,7 @@ public class SmartServoWithImpedence
 
         for(int i=1;i<7;i++)
         {
-        	MatlabToolboxServer.jpos[i]=
+        	ToolboxServer.jpos[i]=
         	initialPosition.get(i);
         }
         
@@ -189,7 +189,7 @@ public class SmartServoWithImpedence
         {
           
         	while(
-        			MatlabToolboxServer.
+        			ToolboxServer.
         			directSmart_ServoMotionFlag==true)
         	{
  
@@ -213,7 +213,7 @@ public class SmartServoWithImpedence
                 {
                 		
                 		
-                		double dj=MatlabToolboxServer.jpos[k]-currentPos.get(k);
+                		double dj=ToolboxServer.jpos[k]-currentPos.get(k);
                 		double disp= getTheDisplacment( dj);
                 		double temp=currentPos.get(k)+disp;
                 		double absDisp=Math.abs(disp);

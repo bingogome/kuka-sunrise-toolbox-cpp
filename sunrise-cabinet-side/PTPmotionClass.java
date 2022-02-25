@@ -58,15 +58,15 @@ public class PTPmotionClass {
 		double[] distPos=new double [7];
 		for(int i=0;i<7;i++)
 		{
-			distPos[i]=MatlabToolboxServer.jpos[i];
+			distPos[i]=ToolboxServer.jpos[i];
 		}
 		
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(
         		ptp(distPos[0],distPos[1],
         				distPos[2],
         				distPos[3],distPos[4],
         				distPos[5],
-        				distPos[6]).setJointVelocityRel(MatlabToolboxServer.jRelVel).breakWhen(comb));
+        				distPos[6]).setJointVelocityRel(ToolboxServer.jRelVel).breakWhen(comb));
 		
 		boolean interruptionFlag=false;
 		for(int i=0;i<7;i++)
@@ -112,11 +112,11 @@ public class PTPmotionClass {
 		double[] distPos=new double [6];
 		for(int i=0;i<6;i++)
 		{
-			distPos[i]=MatlabToolboxServer.EEFpos[i];
+			distPos[i]=ToolboxServer.EEFpos[i];
 		}
 
 		
-		Frame daframe= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		int kkk=0;
 		daframe.setX(distPos[kkk]);
 		kkk=kkk+1;
@@ -131,7 +131,7 @@ public class PTPmotionClass {
 		daframe.setGammaRad(distPos[kkk]);
 		
 		
-		IMotionContainer x=MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(lin(daframe).setCartVelocity(MatlabToolboxServer.jRelVel).breakWhen(comb));
+		IMotionContainer x=ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(lin(daframe).setCartVelocity(ToolboxServer.jRelVel).breakWhen(comb));
 		
 		try {
 			Thread.sleep(20);
@@ -140,7 +140,7 @@ public class PTPmotionClass {
 			e.printStackTrace();
 		}
 		double[] reachedPos=new double[6];
-		Frame reachedFrame= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame reachedFrame= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		kkk=0;
 		reachedPos[kkk]=reachedFrame.getX();
 		kkk=kkk+1;
@@ -206,44 +206,44 @@ public class PTPmotionClass {
 		
 		ICondition comb=generateTorqueCondition( n, indices, minTorque, maxTorque);
 					
-		Frame daframe1= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
-		Frame daframe2= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe1= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe2= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		int kkk=0;
-		daframe1.setX(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setX(ToolboxServer.EEFposCirc1[kkk]);
 		kkk=kkk+1;
-		daframe1.setY(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setY(ToolboxServer.EEFposCirc1[kkk]);
 		kkk=kkk+1;
-		daframe1.setZ(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setZ(ToolboxServer.EEFposCirc1[kkk]);
 		kkk=kkk+1;
-		daframe1.setAlphaRad(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setAlphaRad(ToolboxServer.EEFposCirc1[kkk]);
 		kkk=kkk+1;
-		daframe1.setBetaRad(MatlabToolboxServer.EEFposCirc1[kkk]);		
+		daframe1.setBetaRad(ToolboxServer.EEFposCirc1[kkk]);		
 		kkk=kkk+1;
-		daframe1.setGammaRad(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setGammaRad(ToolboxServer.EEFposCirc1[kkk]);
 		
 		kkk=0;
-		daframe2.setX(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setX(ToolboxServer.EEFposCirc2[kkk]);
 		kkk=kkk+1;
-		daframe2.setY(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setY(ToolboxServer.EEFposCirc2[kkk]);
 		kkk=kkk+1;
-		daframe2.setZ(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setZ(ToolboxServer.EEFposCirc2[kkk]);
 		kkk=kkk+1;
-		daframe2.setAlphaRad(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setAlphaRad(ToolboxServer.EEFposCirc2[kkk]);
 		kkk=kkk+1;
-		daframe2.setBetaRad(MatlabToolboxServer.EEFposCirc2[kkk]);		
+		daframe2.setBetaRad(ToolboxServer.EEFposCirc2[kkk]);		
 		kkk=kkk+1;
-		daframe2.setGammaRad(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setGammaRad(ToolboxServer.EEFposCirc2[kkk]);
 		
 		double[] distPos=new double [6];
 		for(int i=0;i<6;i++)
 		{
-			distPos[i]=MatlabToolboxServer.EEFposCirc2[i];
+			distPos[i]=ToolboxServer.EEFposCirc2[i];
 		}
 		
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(circ(daframe1,daframe2).setCartVelocity(MatlabToolboxServer.jRelVel).breakWhen(comb));
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(circ(daframe1,daframe2).setCartVelocity(ToolboxServer.jRelVel).breakWhen(comb));
 		
 		double[] reachedPos=new double[6];
-		Frame reachedFrame= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame reachedFrame= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		kkk=0;
 		reachedPos[kkk]=reachedFrame.getX();
 		kkk=kkk+1;
@@ -304,13 +304,13 @@ public class PTPmotionClass {
 		
 		ICondition comb=generateTorqueCondition( n, indices, minTorque, maxTorque);
 		
-		Frame daframe= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		
 
 		double[] distPos=new double [3];
-		distPos[0]=MatlabToolboxServer.EEFpos[0]+daframe.getX();
-		distPos[1]=MatlabToolboxServer.EEFpos[1]+daframe.getY();
-		distPos[2]=MatlabToolboxServer.EEFpos[2]+daframe.getZ();
+		distPos[0]=ToolboxServer.EEFpos[0]+daframe.getX();
+		distPos[1]=ToolboxServer.EEFpos[1]+daframe.getY();
+		distPos[2]=ToolboxServer.EEFpos[2]+daframe.getZ();
 		
 		daframe.setX(distPos[0]);
 
@@ -320,10 +320,10 @@ public class PTPmotionClass {
 
 		
 		
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(lin(daframe).setCartVelocity(MatlabToolboxServer.jRelVel).breakWhen(comb));
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(lin(daframe).setCartVelocity(ToolboxServer.jRelVel).breakWhen(comb));
 		
 		double[] reachedPos=new double[3];
-		Frame reachedFrame= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame reachedFrame= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		int kkk=0;
 		reachedPos[kkk]=reachedFrame.getX();
 		kkk=kkk+1;
@@ -364,14 +364,14 @@ public class PTPmotionClass {
 	{
 		
 		double x,y,z;
-		x=MatlabToolboxServer.EEFpos[0];
+		x=ToolboxServer.EEFpos[0];
 
-		y=MatlabToolboxServer.EEFpos[1];
+		y=ToolboxServer.EEFpos[1];
 
-		z=MatlabToolboxServer.EEFpos[2];
+		z=ToolboxServer.EEFpos[2];
 
 		
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(linRel(x,y,z).setCartVelocity(MatlabToolboxServer.jRelVel));
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(linRel(x,y,z).setCartVelocity(ToolboxServer.jRelVel));
 		
 		String tempString="done"+stopCharacter;
 		daback.sendCommand(tempString);
@@ -419,12 +419,12 @@ public class PTPmotionClass {
 	 */
 	public static void PTPmotionJointSpace()
 	{
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(
-        		ptp(MatlabToolboxServer.jpos[0],MatlabToolboxServer.jpos[1],
-        				MatlabToolboxServer.jpos[2],
-        				MatlabToolboxServer.jpos[3],MatlabToolboxServer.jpos[4],
-        				MatlabToolboxServer.jpos[5],
-        				MatlabToolboxServer.jpos[6]).setJointVelocityRel(MatlabToolboxServer.jRelVel));
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(
+        		ptp(ToolboxServer.jpos[0],ToolboxServer.jpos[1],
+        				ToolboxServer.jpos[2],
+        				ToolboxServer.jpos[3],ToolboxServer.jpos[4],
+        				ToolboxServer.jpos[5],
+        				ToolboxServer.jpos[6]).setJointVelocityRel(ToolboxServer.jRelVel));
 		
 		String tempString="done"+stopCharacter;
 		daback.sendCommand(tempString);
@@ -433,22 +433,22 @@ public class PTPmotionClass {
 	
 	public static void PTPmotionCartizianSpace()
 	{
-		Frame daframe= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		int kkk=0;
-		daframe.setX(MatlabToolboxServer.EEFpos[kkk]);
+		daframe.setX(ToolboxServer.EEFpos[kkk]);
 		kkk=kkk+1;
-		daframe.setY(MatlabToolboxServer.EEFpos[kkk]);
+		daframe.setY(ToolboxServer.EEFpos[kkk]);
 		kkk=kkk+1;
-		daframe.setZ(MatlabToolboxServer.EEFpos[kkk]);
+		daframe.setZ(ToolboxServer.EEFpos[kkk]);
 		kkk=kkk+1;
-		daframe.setAlphaRad(MatlabToolboxServer.EEFpos[kkk]);
+		daframe.setAlphaRad(ToolboxServer.EEFpos[kkk]);
 		kkk=kkk+1;
-		daframe.setBetaRad(MatlabToolboxServer.EEFpos[kkk]);		
+		daframe.setBetaRad(ToolboxServer.EEFpos[kkk]);		
 		kkk=kkk+1;
-		daframe.setGammaRad(MatlabToolboxServer.EEFpos[kkk]);
+		daframe.setGammaRad(ToolboxServer.EEFpos[kkk]);
 		
 		
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(lin(daframe).setCartVelocity(MatlabToolboxServer.jRelVel));
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(lin(daframe).setCartVelocity(ToolboxServer.jRelVel));
 		
 		String tempString="done"+stopCharacter;
 		daback.sendCommand(tempString);
@@ -457,36 +457,36 @@ public class PTPmotionClass {
 	
 	public static void PTPmotionCartizianSpaceCircle()
 	{
-		Frame daframe1= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
-		Frame daframe2= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe1= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe2= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		int kkk=0;
-		daframe1.setX(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setX(ToolboxServer.EEFposCirc1[kkk]);
 		kkk=kkk+1;
-		daframe1.setY(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setY(ToolboxServer.EEFposCirc1[kkk]);
 		kkk=kkk+1;
-		daframe1.setZ(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setZ(ToolboxServer.EEFposCirc1[kkk]);
 		kkk=kkk+1;
-		daframe1.setAlphaRad(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setAlphaRad(ToolboxServer.EEFposCirc1[kkk]);
 		kkk=kkk+1;
-		daframe1.setBetaRad(MatlabToolboxServer.EEFposCirc1[kkk]);		
+		daframe1.setBetaRad(ToolboxServer.EEFposCirc1[kkk]);		
 		kkk=kkk+1;
-		daframe1.setGammaRad(MatlabToolboxServer.EEFposCirc1[kkk]);
+		daframe1.setGammaRad(ToolboxServer.EEFposCirc1[kkk]);
 		
 		kkk=0;
-		daframe2.setX(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setX(ToolboxServer.EEFposCirc2[kkk]);
 		kkk=kkk+1;
-		daframe2.setY(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setY(ToolboxServer.EEFposCirc2[kkk]);
 		kkk=kkk+1;
-		daframe2.setZ(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setZ(ToolboxServer.EEFposCirc2[kkk]);
 		kkk=kkk+1;
-		daframe2.setAlphaRad(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setAlphaRad(ToolboxServer.EEFposCirc2[kkk]);
 		kkk=kkk+1;
-		daframe2.setBetaRad(MatlabToolboxServer.EEFposCirc2[kkk]);		
+		daframe2.setBetaRad(ToolboxServer.EEFposCirc2[kkk]);		
 		kkk=kkk+1;
-		daframe2.setGammaRad(MatlabToolboxServer.EEFposCirc2[kkk]);
+		daframe2.setGammaRad(ToolboxServer.EEFposCirc2[kkk]);
 		
 		
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(circ(daframe1,daframe2).setCartVelocity(MatlabToolboxServer.jRelVel));
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(circ(daframe1,daframe2).setCartVelocity(ToolboxServer.jRelVel));
 		
 		String tempString="done"+stopCharacter;
 		daback.sendCommand(tempString);
@@ -496,18 +496,18 @@ public class PTPmotionClass {
 	public static void PTPmotionCartizianSpaceRelWorld()
 	{
 		
-		Frame daframe= _lbr.getCurrentCartesianPosition(MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
+		Frame daframe= _lbr.getCurrentCartesianPosition(ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame());
 		
 
-		daframe.setX(MatlabToolboxServer.EEFpos[0]+daframe.getX());
+		daframe.setX(ToolboxServer.EEFpos[0]+daframe.getX());
 
-		daframe.setY(MatlabToolboxServer.EEFpos[1]+daframe.getY());
+		daframe.setY(ToolboxServer.EEFpos[1]+daframe.getY());
 
-		daframe.setZ(MatlabToolboxServer.EEFpos[2]+daframe.getZ());
+		daframe.setZ(ToolboxServer.EEFpos[2]+daframe.getZ());
 
 		
 		
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(lin(daframe).setCartVelocity(MatlabToolboxServer.jRelVel));
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(lin(daframe).setCartVelocity(ToolboxServer.jRelVel));
 		
 		String tempString="done"+stopCharacter;
 		daback.sendCommand(tempString);
@@ -519,14 +519,14 @@ public class PTPmotionClass {
 	{
 		
 		double x,y,z;
-		x=MatlabToolboxServer.EEFpos[0];
+		x=ToolboxServer.EEFpos[0];
 
-		y=MatlabToolboxServer.EEFpos[1];
+		y=ToolboxServer.EEFpos[1];
 
-		z=MatlabToolboxServer.EEFpos[2];
+		z=ToolboxServer.EEFpos[2];
 
 		
-		MatlabToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(linRel(x,y,z).setCartVelocity(MatlabToolboxServer.jRelVel));
+		ToolboxServer._toolAttachedToLBR.getDefaultMotionFrame().move(linRel(x,y,z).setCartVelocity(ToolboxServer.jRelVel));
 		
 		String tempString="done"+stopCharacter;
 		daback.sendCommand(tempString);

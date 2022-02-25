@@ -87,7 +87,7 @@ class BackgroundTask implements Runnable {
 			catch (Exception e) {
 				// TODO: handle exception
 				ss.close();
-				MatlabToolboxServer.terminateFlag=true;
+				ToolboxServer.terminateFlag=true;
 				return;
 			}
 			Scanner scan= new Scanner(soc.getInputStream());
@@ -96,86 +96,86 @@ class BackgroundTask implements Runnable {
 			{
 				if(scan.hasNextLine())
 				{			
-					MatlabToolboxServer.daCommand=scan.nextLine();
+					ToolboxServer.daCommand=scan.nextLine();
 					 
-					if(MatlabToolboxServer.daCommand.startsWith("jf_"))
+					if(ToolboxServer.daCommand.startsWith("jf_"))
 		        	{
-		        		boolean tempBool=getTheJointsf(MatlabToolboxServer.daCommand);
-		        		MatlabToolboxServer.daCommand="";
-		        		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		        		boolean tempBool=getTheJointsf(ToolboxServer.daCommand);
+		        		ToolboxServer.daCommand="";
+		        		// ToolboxServer.printMessage(ToolboxServer.daCommand);
 		        		if(tempBool==false)
 		        		{
-		        			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		        			ToolboxServer.directSmart_ServoMotionFlag=false;
 		        		}
 		        		// this.sendCommand(ack); no acknowledgement in fast execution mode
 		        	}
 					// If the signal is equal to end, you shall turn off the server.
-					else if(MatlabToolboxServer.daCommand.startsWith("end"))
+					else if(ToolboxServer.daCommand.startsWith("end"))
 					{
 						/* Close all existing loops:
 						/  1- The BackgroundTask loop.
-						 * 2- The main class, MatlabToolboxServer loops:
-						 * 		a- The while loop in run, using the flag: MatlabToolboxServer.terminateFlag.
-						 * 		b- The direct servo loop, using the flag: MatlabToolboxServer.directServoMotionFlag.
+						 * 2- The main class, ToolboxServer loops:
+						 * 		a- The while loop in run, using the flag: ToolboxServer.terminateFlag.
+						 * 		b- The direct servo loop, using the flag: ToolboxServer.directServoMotionFlag.
 						*/
-						MatlabToolboxServer.directSmart_ServoMotionFlag=false;
-						MatlabToolboxServer.terminateFlag=true;
+						ToolboxServer.directSmart_ServoMotionFlag=false;
+						ToolboxServer.terminateFlag=true;
 						break;						
 					}
 					// Put the direct_servo joint angles command in the joint variable
-					else if(MatlabToolboxServer.daCommand.startsWith("jp"))
+					else if(ToolboxServer.daCommand.startsWith("jp"))
 		        	{
 		        		updateJointsPositionArray();
 		        	}
-					else if(MatlabToolboxServer.daCommand.startsWith("vel"))
+					else if(ToolboxServer.daCommand.startsWith("vel"))
 		        	{
 		        		updateVelocityArrays();
 		        	}
-					else if(MatlabToolboxServer.daCommand.startsWith("cArtixanPosition"))
+					else if(ToolboxServer.daCommand.startsWith("cArtixanPosition"))
 		        	{
-						if(MatlabToolboxServer.daCommand.startsWith("cArtixanPositionCirc1"))
+						if(ToolboxServer.daCommand.startsWith("cArtixanPositionCirc1"))
 						{
-			        		boolean tempBool=getEEFposCirc1(MatlabToolboxServer.daCommand);
-			        		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			        		boolean tempBool=getEEFposCirc1(ToolboxServer.daCommand);
+			        		// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			        		if(tempBool==false)
 			        		{
-			        			//MatlabToolboxServer.directServoMotionFlag=false;
+			        			//ToolboxServer.directServoMotionFlag=false;
 			        		}
 			        		this.sendCommand(ack);
-			        		MatlabToolboxServer.daCommand="";
+			        		ToolboxServer.daCommand="";
 						}
-						else if(MatlabToolboxServer.daCommand.startsWith("cArtixanPositionCirc2"))
+						else if(ToolboxServer.daCommand.startsWith("cArtixanPositionCirc2"))
 						{
-			        		boolean tempBool=getEEFposCirc2(MatlabToolboxServer.daCommand);
-			        		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			        		boolean tempBool=getEEFposCirc2(ToolboxServer.daCommand);
+			        		// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			        		if(tempBool==false)
 			        		{
-			        			//MatlabToolboxServer.directServoMotionFlag=false;
+			        			//ToolboxServer.directServoMotionFlag=false;
 			        		}
 			        		this.sendCommand(ack);
-			        		MatlabToolboxServer.daCommand="";
+			        		ToolboxServer.daCommand="";
 						}
 						else
 						{
-			        		boolean tempBool=getEEFpos(MatlabToolboxServer.daCommand);
-			        		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			        		boolean tempBool=getEEFpos(ToolboxServer.daCommand);
+			        		// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			        		if(tempBool==false)
 			        		{
-			        			//MatlabToolboxServer.directServoMotionFlag=false;
+			        			//ToolboxServer.directServoMotionFlag=false;
 			        		}
 			        		this.sendCommand(ack);
-			        		MatlabToolboxServer.daCommand="";
+			        		ToolboxServer.daCommand="";
 						}
 		        	}
 					
 					// This insturction is used to turn_off the direct_servo controller
-		        	else if(MatlabToolboxServer.daCommand.startsWith("stopDirectServoJoints"))
+		        	else if(ToolboxServer.daCommand.startsWith("stopDirectServoJoints"))
 		        	{
-		        		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		        		ToolboxServer.directSmart_ServoMotionFlag=false;
 		        		this.sendCommand(ack);
-		        		MatlabToolboxServer.daCommand="";
+		        		ToolboxServer.daCommand="";
 		        	}
-					else if(MatlabToolboxServer.daCommand.startsWith("DcSe"))
+					else if(ToolboxServer.daCommand.startsWith("DcSe"))
 		        	{
 		        		updateEEFPositionArray();
 		        	}
@@ -194,7 +194,7 @@ class BackgroundTask implements Runnable {
 		
 		
 		try {
-			MatlabToolboxServer.terminateFlag=true;
+			ToolboxServer.terminateFlag=true;
 			soc.close();
 			ss.close();
 		} catch (IOException e) {
@@ -206,60 +206,60 @@ class BackgroundTask implements Runnable {
 
 	private void updateVelocityArrays()
 	{
-		if(MatlabToolboxServer.daCommand.startsWith("velJDC_"))
+		if(ToolboxServer.daCommand.startsWith("velJDC_"))
 		{
-			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
 			this.sendCommand(ack);
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("velJDCExT_"))
+		else if(ToolboxServer.daCommand.startsWith("velJDCExT_"))
 		{
-			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsExternalTorquesToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsExternalTorquesToClient();
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("velJDCMT_"))
+		else if(ToolboxServer.daCommand.startsWith("velJDCMT_"))
 		{
-			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsMeasuredTorquesToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsMeasuredTorquesToClient();
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("velJDCEEfP_"))
+		else if(ToolboxServer.daCommand.startsWith("velJDCEEfP_"))
 		{
-			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("velJDCJP_"))
+		else if(ToolboxServer.daCommand.startsWith("velJDCJP_"))
 		{
-			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getJointsVelocitiesForVelocityContrtolMode(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsPositionsToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsPositionsToClient();
+			ToolboxServer.daCommand="";
 		}
 	}
 	
@@ -269,73 +269,73 @@ class BackgroundTask implements Runnable {
 		//Start of server update functions
 		/////////////////////////////////////////////////////						
 		
-		if(MatlabToolboxServer.daCommand.startsWith("DcSeCar_"))
+		if(ToolboxServer.daCommand.startsWith("DcSeCar_"))
 		{
-			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
 			// this.sendCommand(ack);
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarExT_"))
+		else if(ToolboxServer.daCommand.startsWith("DcSeCarExT_"))
 		{
-			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsExternalTorquesToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsExternalTorquesToClient();
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarMT_"))
+		else if(ToolboxServer.daCommand.startsWith("DcSeCarMT_"))
 		{
-			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsMeasuredTorquesToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsMeasuredTorquesToClient();
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarEEfP_"))
+		else if(ToolboxServer.daCommand.startsWith("DcSeCarEEfP_"))
 		{
-			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarJP_"))
+		else if(ToolboxServer.daCommand.startsWith("DcSeCarJP_"))
 		{
-			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsPositionsToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsPositionsToClient();
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarEEfFrelEEF_")) 
+		else if(ToolboxServer.daCommand.startsWith("DcSeCarEEfFrelEEF_")) 
 		{
 			// "newly-added 12th-May-2019"
 			// Update Cartesian position of EEF and returns force force feedback described in EEF reference frame	
-			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+				ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendEEFforcesToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendEEFforcesToClient();
+			ToolboxServer.daCommand="";
 		}
 		//////////////////////////////////////////////////
 		//End of Servo joints update functions
@@ -355,7 +355,7 @@ class BackgroundTask implements Runnable {
 						//getLogger().warn(jointString);
 						try
 						{
-							MatlabToolboxServer.EEfServoPos[j]=Double.parseDouble(st.nextToken());
+							ToolboxServer.EEfServoPos[j]=Double.parseDouble(st.nextToken());
 						}
 						catch(Exception e)
 						{
@@ -364,7 +364,7 @@ class BackgroundTask implements Runnable {
 					}					
 					j++;
 				}
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 				return true;
 				
 			}
@@ -387,7 +387,7 @@ class BackgroundTask implements Runnable {
 						//getLogger().warn(jointString);
 						try
 						{
-							MatlabToolboxServer.jvel[j]=
+							ToolboxServer.jvel[j]=
 							Double.parseDouble(st.nextToken());
 						}
 						catch(Exception e)
@@ -397,7 +397,7 @@ class BackgroundTask implements Runnable {
 					}					
 					j++;
 				}
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 				return true;
 				
 			}
@@ -413,72 +413,72 @@ class BackgroundTask implements Runnable {
 		//////////////////////////////////////////////////
 		//Start of server update functions
 		/////////////////////////////////////////////////////								
-		if(MatlabToolboxServer.daCommand.startsWith("jp_"))
+		if(ToolboxServer.daCommand.startsWith("jp_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getTheJoints(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+				ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
 			this.sendCommand(ack);
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("jpExT_"))
+		else if(ToolboxServer.daCommand.startsWith("jpExT_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getTheJoints(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+				ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsExternalTorquesToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsExternalTorquesToClient();
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("jpMT_"))
+		else if(ToolboxServer.daCommand.startsWith("jpMT_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getTheJoints(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+				ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsMeasuredTorquesToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsMeasuredTorquesToClient();
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("jpEEfP_"))
+		else if(ToolboxServer.daCommand.startsWith("jpEEfP_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getTheJoints(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+				ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("jpJP_"))
+		else if(ToolboxServer.daCommand.startsWith("jpJP_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getTheJoints(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+				ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendJointsPositionsToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendJointsPositionsToClient();
+			ToolboxServer.daCommand="";
 		}
-		else if(MatlabToolboxServer.daCommand.startsWith("jpEEfFrelEEF_"))
+		else if(ToolboxServer.daCommand.startsWith("jpEEfFrelEEF_"))
 		{
 			// "newly-added 12th-May-2019"
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			boolean tempBool=getTheJoints(ToolboxServer.daCommand);
+			// ToolboxServer.printMessage(ToolboxServer.daCommand);
 			if(tempBool==false)
 			{
-				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+				ToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendEEFforcesToClient();
-			MatlabToolboxServer.daCommand="";
+			ToolboxServer.svr.sendEEFforcesToClient();
+			ToolboxServer.daCommand="";
 		}
 
 		
@@ -491,102 +491,102 @@ class BackgroundTask implements Runnable {
 	private void dataAqcuisitionRequest()
 	{
 		// Inquiring data from server
-    	if(MatlabToolboxServer.daCommand.startsWith("getJointsPositions"))
+    	if(ToolboxServer.daCommand.startsWith("getJointsPositions"))
     	{
-    		MatlabToolboxServer.svr.sendJointsPositionsToClient();
-    		MatlabToolboxServer.daCommand="";
+    		ToolboxServer.svr.sendJointsPositionsToClient();
+    		ToolboxServer.daCommand="";
     	}        	
     	// Write output of Mediaflange
-    	else if(MatlabToolboxServer.daCommand.startsWith("blueOn"))
+    	else if(ToolboxServer.daCommand.startsWith("blueOn"))
     	{
-    		MatlabToolboxServer.mff.blueOn();
+    		ToolboxServer.mff.blueOn();
     		sendCommand(ack);
-    		MatlabToolboxServer.daCommand="";
+    		ToolboxServer.daCommand="";
     	}
-    	else if(MatlabToolboxServer.daCommand.startsWith("blueOff"))
+    	else if(ToolboxServer.daCommand.startsWith("blueOff"))
     	{
-    		MatlabToolboxServer.mff.blueOff();
+    		ToolboxServer.mff.blueOff();
     		sendCommand(ack);
-    		MatlabToolboxServer.daCommand="";
+    		ToolboxServer.daCommand="";
     	}
-    	else if(MatlabToolboxServer.daCommand.startsWith("pin"))
+    	else if(ToolboxServer.daCommand.startsWith("pin"))
     	{
-        	if(MatlabToolboxServer.daCommand.startsWith("pin1on"))
+        	if(ToolboxServer.daCommand.startsWith("pin1on"))
 			{
-        		MatlabToolboxServer.mff.pin1On();
+        		ToolboxServer.mff.pin1On();
 				sendCommand(ack);
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("pin1off"))
+			else if(ToolboxServer.daCommand.startsWith("pin1off"))
 			{
-				MatlabToolboxServer.mff.pin1Off();
+				ToolboxServer.mff.pin1Off();
 				sendCommand(ack);
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("pin11on"))
+			else if(ToolboxServer.daCommand.startsWith("pin11on"))
 			{
-				MatlabToolboxServer.mff.pin11On();
+				ToolboxServer.mff.pin11On();
 				sendCommand(ack);
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("pin11off"))
+			else if(ToolboxServer.daCommand.startsWith("pin11off"))
 			{
-				MatlabToolboxServer.mff.pin11Off();
+				ToolboxServer.mff.pin11Off();
 				sendCommand(ack);
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("pin2on"))
+			else if(ToolboxServer.daCommand.startsWith("pin2on"))
 			{
-				MatlabToolboxServer.mff.pin2On();
+				ToolboxServer.mff.pin2On();
 				sendCommand(ack);
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("pin2off"))
+			else if(ToolboxServer.daCommand.startsWith("pin2off"))
 			{
-				MatlabToolboxServer.mff.pin2Off();
+				ToolboxServer.mff.pin2Off();
 				sendCommand(ack);
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("pin12on"))
+			else if(ToolboxServer.daCommand.startsWith("pin12on"))
 			{
-				MatlabToolboxServer.mff.pin12On();
+				ToolboxServer.mff.pin12On();
 				sendCommand(ack);
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("pin12off"))
+			else if(ToolboxServer.daCommand.startsWith("pin12off"))
 			{
-				MatlabToolboxServer.mff.pin12Off();
+				ToolboxServer.mff.pin12Off();
 				sendCommand(ack);
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 			}
     	}
     	// Read input of Mediaflange
-    	if(MatlabToolboxServer.daCommand.startsWith("getPin"))
+    	if(ToolboxServer.daCommand.startsWith("getPin"))
     	{
-			if(MatlabToolboxServer.daCommand.startsWith("getPin10"))
+			if(ToolboxServer.daCommand.startsWith("getPin10"))
 			{
-				MatlabToolboxServer.mff.getPin10();
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.mff.getPin10();
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("getPin16"))
+			else if(ToolboxServer.daCommand.startsWith("getPin16"))
 			{
-				MatlabToolboxServer.mff.getPin16();
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.mff.getPin16();
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("getPin13"))
+			else if(ToolboxServer.daCommand.startsWith("getPin13"))
 			{
-				MatlabToolboxServer.mff.getPin13();
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.mff.getPin13();
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("getPin3"))
+			else if(ToolboxServer.daCommand.startsWith("getPin3"))
 			{
-				MatlabToolboxServer.mff.getPin3();
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.mff.getPin3();
+				ToolboxServer.daCommand="";
 			}
-			else if(MatlabToolboxServer.daCommand.startsWith("getPin4"))
+			else if(ToolboxServer.daCommand.startsWith("getPin4"))
 			{
-				MatlabToolboxServer.mff.getPin4();
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.mff.getPin4();
+				ToolboxServer.daCommand="";
 			}
     	}
 	}
@@ -612,12 +612,12 @@ class BackgroundTask implements Runnable {
 					if(j<7)
 					{
 						//getLogger().warn(jointString);
-						MatlabToolboxServer.jpos[j]=Double.parseDouble(jointString);
+						ToolboxServer.jpos[j]=Double.parseDouble(jointString);
 					}
 					
 					j++;
 				}
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 				return true;
 				
 			}
@@ -650,7 +650,7 @@ class BackgroundTask implements Runnable {
 					if(j<7)
 					{
 						//getLogger().warn(jointString);
-						MatlabToolboxServer.jpos[j]=Double.parseDouble(jointString);
+						ToolboxServer.jpos[j]=Double.parseDouble(jointString);
 					}
 					
 					j++;
@@ -684,12 +684,12 @@ class BackgroundTask implements Runnable {
 					if(j<6)
 					{
 						//getLogger().warn(jointString);
-						MatlabToolboxServer.EEFpos[j]=Double.parseDouble(jointString);
+						ToolboxServer.EEFpos[j]=Double.parseDouble(jointString);
 					}
 					
 					j++;
 				}
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 				return true;
 				
 			}
@@ -720,12 +720,12 @@ class BackgroundTask implements Runnable {
 					if(j<6)
 					{
 						//getLogger().warn(jointString);
-						MatlabToolboxServer.EEFposCirc2[j]=Double.parseDouble(jointString);
+						ToolboxServer.EEFposCirc2[j]=Double.parseDouble(jointString);
 					}
 					
 					j++;
 				}
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 				return true;
 				
 			}
@@ -756,12 +756,12 @@ class BackgroundTask implements Runnable {
 					if(j<6)
 					{
 						//getLogger().warn(jointString);
-						MatlabToolboxServer.EEFposCirc1[j]=Double.parseDouble(jointString);
+						ToolboxServer.EEFposCirc1[j]=Double.parseDouble(jointString);
 					}
 					
 					j++;
 				}
-				MatlabToolboxServer.daCommand="";
+				ToolboxServer.daCommand="";
 				return true;
 				
 			}

@@ -16,34 +16,6 @@ struct KstServoingRobotConst{
     const double MEDIEN_NONE=0.0;
 };
 
-struct KstInertia{
-    std::vector<double> m;
-    std::vector<std::vector<double>> pcii;
-    std::vector<std::vector<std::vector<double>>> I;
-};
-
-struct KstDH{
-    std::vector<double> alpha;
-    std::vector<double> d;
-    std::vector<double> a;
-};
-
-struct KstForwardKinematics{
-
-};
-
-struct KstInverseKinematics{
-
-};
-
-struct KstForwardDynamics{
-
-};
-
-struct KstInverseDynamics{
-
-};
-
 class KstServoing{
 
 private:
@@ -53,14 +25,12 @@ private:
     tcp::socket tcp_sock_; // tcpip connection object
     boost::array<char, 128> buf_;
 
-    //robot data
-    KstInertia data_I_; // inertial data of the robot
-    KstDH data_dh_; // DH parameters of the robot, combination
+    // robot data
     std::string robot_type_;
     int flange_type_;
 
-    // tf2::Transform teftool_ = tf2::Transform( // end effector tranform
-    // 	tf2::Quaternion(0, 0, 0, 1), tf2::Vector3(0.0, 0.0, 0.0)); 
+    // flags
+    bool f_sft_real_time_ = false; // status of soft real time
 
 public:
 
@@ -73,8 +43,8 @@ public:
         );
     
     // PTP motion
-    bool PTPJointSpace(std::vector<double> jpos , double relVel);
-    bool PTPLineEEF(std::vector<double> epos, double vel); // vel: mm/sec
+    void PTPJointSpace(std::vector<double> jpos , double relVel);
+    void PTPLineEEF(std::vector<double> epos, double vel); // vel: mm/sec
 
     // Smart and direct servo methods
     void ServoDirectCartesianStart();
@@ -93,24 +63,7 @@ public:
     std::vector<double> GetEEFPosition();
         
     // networking
-    bool NetEstablishConnection();
+    void NetEstablishConnection();
     void NetTurnoffServer();
 
-    // utility/member methods
-    // std::vector<std::vector<double>> utl_centrifugal_matrix();
-    // std::vector<std::vector<double>> utl_coriolis_matrix();
-    // std::vector<std::vector<double>> utl_mass_matrix();
-    // std::vector<std::vector<double>> utl_nullspace_matrix();
-    // std::vector<std::vector<double>> utl_jacobian_matrix();
-    // std::vector<std::vector<double>> utl_dh_matrix();
-    // std::vector<double> utl_gravity_vector();
-    // KSTServoingDynamicsForward utl_forward_dynamics();
-    // KSTServoingDynamicsInverse utl_inverse_dynamics();
-    // KSTServoingKinematicsForward utl_forward_kinematics();
-    // KSTServoingKinematicsInverse utl_inverse_kinematics();
-    // KstDH utl_dh_parameters(int robot_type);
-    // KstInertia utl_inertial_parameters(int robot_type);
-
-    // flags
-    bool flg_realtimectl_ = false;
 };
