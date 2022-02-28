@@ -1,20 +1,21 @@
 #pragma once
+#include <boost/asio.hpp>
 
-struct KstServoingRobotConst{
-	// type of the robot
-    const int LBR7R800=1;
-    const int LBR14R820=2;
-    // height of flange (unit meter), taken from iiwa data sheets
-    // Manual: 
-    // [1] Medien-Flansch
-    // Für Produktfamilie LBR iiwa
-    // Montage- und Betriebsanleitung
-    const double MEDIEN_FLANSCH_ELEKTRISCH= 0.035;
-    const double MEDIEN_FLANSCH_PNEUMATISCH= 0.035;
-    const double MEDIEN_FLANSCH_IO_PNEUMATISCH= 0.035;
-    const double MEDIEN_FLANSCH_TOUCH_PNEUMATISCH= 0.061;
-    const double MEDIEN_NONE=0.0;
-};
+// struct KstServoingRobotConst{
+// 	// type of the robot
+//     const int LBR7R800=1;
+//     const int LBR14R820=2;
+//     // height of flange (unit meter), taken from iiwa data sheets
+//     // Manual: 
+//     // [1] Medien-Flansch
+//     // Für Produktfamilie LBR iiwa
+//     // Montage- und Betriebsanleitung
+//     const double MEDIEN_FLANSCH_ELEKTRISCH= 0.035;
+//     const double MEDIEN_FLANSCH_PNEUMATISCH= 0.035;
+//     const double MEDIEN_FLANSCH_IO_PNEUMATISCH= 0.035;
+//     const double MEDIEN_FLANSCH_TOUCH_PNEUMATISCH= 0.061;
+//     const double MEDIEN_NONE=0.0;
+// };
 
 class KstServoing{
 
@@ -37,8 +38,6 @@ public:
     // constructor
     KSTServoing(
         std::string robot_ip, 
-        int robot_type, 
-        double h_flange, 
         boost::asio::io_context& io_context,
         );
     

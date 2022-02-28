@@ -1,8 +1,44 @@
 #include <kst_servoing.hpp>
+#include <boost/asio.hpp>
 
+/*****
+ *
+ * Some utility functions
+ * 
+ ****/
+
+// Format the double to string messages
+FormatedDouble2String(double a, int dec)
+{
+	std::stringstream stream;
+    stream << std::fixed << std::setprecision(dec) << a;
+    std::string s = stream.str();
+    return s;
+}
+
+// Parse received messages into double vector
+std::vector<double> ParseString2DoubleVec(std::string s)
+{
+	std::vector<double> vec;
+	std::string delimiter = "_";
+	size_t pos = 0;
+	while ((pos = s.find(delimiter)) != std::string::npos) 
+	{
+	    vec.push_back(std::stod(s.substr(0, pos)));
+	    s.erase(0, pos + delimiter.length());
+	}
+	return vec;
+}
+
+/*****
+ * 
+ * KstServoing implementations
+ *
+ ****/
+
+// Constructor
 KstServoing::KstServoing(
 	std::string robot_ip, 
-	int robot_type, double h_flange, 
 	boost::asio::io_context& io_context)
 	: 
 	tcp_sock_(io_context)
@@ -11,6 +47,7 @@ KstServoing::KstServoing(
 	tcp::endpoint remote_endpoint = tcp::endpoint(boost::asio::ip::address_v4::from_string(robot_ip), 30001);
 }
 
+// Send connection request to Sunrise Cabinet
 void KstServoing::NetEstablishConnection()
 {
 	tcp_sock_.connect(remote_endpoint);
@@ -24,14 +61,16 @@ void KstServoing::NetEstablishConnection()
 	const std::string msg1 = "TFtrans_0.0_0.0_0.0_0.0_0.0_0.0\n";
 	size_t lenmsgr1;
 
-	// TODO: success connection when received 
-	while()
-	{
-		boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
-		lenmsgr1 = tcp_sock_.read_some(boost::asio::buffer(buf_));
-	}
+	// TODO: test if: successful connection when received 
+	// May need to add a pause (or better, check if can do a handshake type of ack)
+	// Previously using ros sleep
+
+	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
+	lenmsgr1 = tcp_sock_.read_some(boost::asio::buffer(buf_));
+	
 }
 
+// Send a point-to-point command, in joint space
 void KstServoing::PTPJointSpace(std::vector<double> jpos , double relVel)
 {
 	try
@@ -44,13 +83,13 @@ void KstServoing::PTPJointSpace(std::vector<double> jpos , double relVel)
 		size_t lenmsgr1 = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
 
 		const std::string msgjs = "jp_" + 
-			formated_double_2_string(jpos[0], 5) + "_" +
-			formated_double_2_string(jpos[1], 5) + "_" +
-			formated_double_2_string(jpos[2], 5) + "_" +
-			formated_double_2_string(jpos[3], 5) + "_" +
-			formated_double_2_string(jpos[4], 5) + "_" +
-			formated_double_2_string(jpos[5], 5) + "_" +
-			formated_double_2_string(jpos[6], 5) + "_\n";
+			FormatedDouble2String(jpos[0], 5) + "_" +
+			FormatedDouble2String(jpos[1], 5) + "_" +
+			FormatedDouble2String(jpos[2], 5) + "_" +
+			FormatedDouble2String(jpos[3], 5) + "_" +
+			FormatedDouble2String(jpos[4], 5) + "_" +
+			FormatedDouble2String(jpos[5], 5) + "_" +
+			FormatedDouble2String(jpos[6], 5) + "_\n";
 		boost::asio::write(tcp_sock_, boost::asio::buffer(msgjs), error);
 		size_t lenmsgrjs = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
 
@@ -67,6 +106,7 @@ void KstServoing::PTPJointSpace(std::vector<double> jpos , double relVel)
 	}
 }
 
+// Send a point-to-point command, in end-effector, and the linear trajectory
 void KstServoing::PTPLineEEF(std::vector<double> epos, double vel)
 {// vel: mm/sec
 	try
@@ -100,6 +140,7 @@ void KstServoing::PTPLineEEF(std::vector<double> epos, double vel)
 	}
 }
 
+// Send a command to Sunrise Cabinet to start Direct Servo, in EEF
 void KstServoing::ServoDirectCartesianStart()
 {
 	boost::system::error_code error;
@@ -108,6 +149,7 @@ void KstServoing::ServoDirectCartesianStart()
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
 }
 
+// Send a command to Sunrise Cabinet to start Direct Servo, in joint space
 void KstServoing::ServoDirectJointStart()
 {
 	boost::system::error_code error;
@@ -116,6 +158,7 @@ void KstServoing::ServoDirectJointStart()
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
 }
 
+// Send a command to Sunrise Cabinet to start Smart Servo, in EEF
 void KstServoing::ServoSmartCartesianStart()
 {
 	boost::system::error_code error;
@@ -124,6 +167,7 @@ void KstServoing::ServoSmartCartesianStart()
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
 }
 
+// Stop Smart/Direct Servo
 void KstServoing::ServoStop()
 {
 	boost::system::error_code error;
@@ -132,31 +176,34 @@ void KstServoing::ServoStop()
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
 }
 
+// In servo mode, send joint positions
 void KstServoing::ServoSendJoints(std::vector<double> jp)
 {
 	boost::system::error_code error;
 	const std::string msg1 = "jf_"+ 
-		formated_double_2_string(jp[0], 5) + "_" +
-		formated_double_2_string(jp[1], 5) + "_" +
-		formated_double_2_string(jp[2], 5) + "_" +
-		formated_double_2_string(jp[3], 5) + "_" +
-		formated_double_2_string(jp[4], 5) + "_" +
-		formated_double_2_string(jp[5], 5) + "_" +
-		formated_double_2_string(jp[6], 5) + "_\n";
+		FormatedDouble2String(jp[0], 5) + "_" +
+		FormatedDouble2String(jp[1], 5) + "_" +
+		FormatedDouble2String(jp[2], 5) + "_" +
+		FormatedDouble2String(jp[3], 5) + "_" +
+		FormatedDouble2String(jp[4], 5) + "_" +
+		FormatedDouble2String(jp[5], 5) + "_" +
+		FormatedDouble2String(jp[6], 5) + "_\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 }
 
+
+// In servo mode, send joint positions and get feedback
 std::vector<double> KstServoing::ServoSendJointsGetFeedback(std::vector<double> jp)
 {
 	boost::system::error_code error;
 	const std::string msg1 = "jpJP_"+ 
-		formated_double_2_string(jp[0], 5) + "_" +
-		formated_double_2_string(jp[1], 5) + "_" +
-		formated_double_2_string(jp[2], 5) + "_" +
-		formated_double_2_string(jp[3], 5) + "_" +
-		formated_double_2_string(jp[4], 5) + "_" +
-		formated_double_2_string(jp[5], 5) + "_" +
-		formated_double_2_string(jp[6], 5) + "_\n";
+		FormatedDouble2String(jp[0], 5) + "_" +
+		FormatedDouble2String(jp[1], 5) + "_" +
+		FormatedDouble2String(jp[2], 5) + "_" +
+		FormatedDouble2String(jp[3], 5) + "_" +
+		FormatedDouble2String(jp[4], 5) + "_" +
+		FormatedDouble2String(jp[5], 5) + "_" +
+		FormatedDouble2String(jp[6], 5) + "_\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
@@ -166,34 +213,37 @@ std::vector<double> KstServoing::ServoSendJointsGetFeedback(std::vector<double> 
 		ssmsgr << buf_[i];
 	strmsgr = ssmsgr.str();
 
-	std::vector<double> jpbk = parseString2DoubleVec(strmsgr);
+	// Joint position feedback
+	std::vector<double> jpbk = ParseString2DoubleVec(strmsgr);
 
 	return jpbk;
 }
 
+// In servo mode, send EEF position
 void KstServoing::ServoSendEEF(std::vector<double> eef) // x y z rz ry rx
 {
 	boost::system::error_code error;
 	const std::string msg1 = "DcSeCar_"+ 
-		formated_double_2_string(eef[0], 5) + "_" +
-		formated_double_2_string(eef[1], 5) + "_" +
-		formated_double_2_string(eef[2], 5) + "_" +
-		formated_double_2_string(eef[3], 5) + "_" +
-		formated_double_2_string(eef[4], 5) + "_" +
-		formated_double_2_string(eef[5], 5) + "_\n";
+		FormatedDouble2String(eef[0], 5) + "_" +
+		FormatedDouble2String(eef[1], 5) + "_" +
+		FormatedDouble2String(eef[2], 5) + "_" +
+		FormatedDouble2String(eef[3], 5) + "_" +
+		FormatedDouble2String(eef[4], 5) + "_" +
+		FormatedDouble2String(eef[5], 5) + "_\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 }
 
+// In servo mode, send EEF position and get feedback
 std::vector<double> KstServoing::ServoSendEEFGetFeedback(std::vector<double> eef)  // x y z rz ry rx
 {
 	boost::system::error_code error;
 	const std::string msg1 = "DcSeCarEEfP_"+ 
-		formated_double_2_string(eef[0], 5) + "_" +
-		formated_double_2_string(eef[1], 5) + "_" +
-		formated_double_2_string(eef[2], 5) + "_" +
-		formated_double_2_string(eef[3], 5) + "_" +
-		formated_double_2_string(eef[4], 5) + "_" +
-		formated_double_2_string(eef[5], 5) + "_\n";
+		FormatedDouble2String(eef[0], 5) + "_" +
+		FormatedDouble2String(eef[1], 5) + "_" +
+		FormatedDouble2String(eef[2], 5) + "_" +
+		FormatedDouble2String(eef[3], 5) + "_" +
+		FormatedDouble2String(eef[4], 5) + "_" +
+		FormatedDouble2String(eef[5], 5) + "_\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
@@ -203,11 +253,12 @@ std::vector<double> KstServoing::ServoSendEEFGetFeedback(std::vector<double> eef
 		ssmsgr << buf_[i];
 	strmsgr = ssmsgr.str();
 
-	std::vector<double> eefbk = parseString2DoubleVec(strmsgr);
+	std::vector<double> eefbk = ParseString2DoubleVec(strmsgr);
 
 	return eefbk;
 }
 
+// Get current joint position
 std::vector<double> KstServoing::GetJointPosition()
 {
 	std::string strmsgr;
@@ -227,12 +278,13 @@ std::vector<double> KstServoing::GetJointPosition()
 	{
 		throw;
 	}
-	std::vector<double> vec = parseString2DoubleVec(strmsgr);
+	std::vector<double> vec = ParseString2DoubleVec(strmsgr);
 	// vector format: a1 a2 a3 a4 a5 a6 a7
 	
 	return vec;
 }
 
+// Get current EEF pose
 std::vector<double> KstServoing::GetEEFPosition()
 {
 	std::string strmsgr;
@@ -251,19 +303,13 @@ std::vector<double> KstServoing::GetEEFPosition()
 	{
 		throw;
 	}
-	std::vector<double> vec = parseString2DoubleVec(strmsgr);
+	std::vector<double> vec = ParseString2DoubleVec(strmsgr);
 	// vector format: x y z rz ry rx
 
-	geometry_msgs::TransformStamped eef; 
-	eef.transform.translation.x = vec[0];
-	eef.transform.translation.y = vec[1];
-	eef.transform.translation.z = vec[2];
-	std::vector<double> eul(&vec[3],&vec[6]);
-	eef.transform.rotation = UtlCalculations::eul2quat(eul);
-
-	return eef;
+	return vec;
 }
 
+// Turn of the connection
 void KstServoing::NetTurnoffServer()
 {
 	boost::system::error_code error;
