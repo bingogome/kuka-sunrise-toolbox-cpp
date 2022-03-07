@@ -29,5 +29,5 @@ It can potentially used in other languages if a built C++ library can be called.
 ### Note
 - Be sure to read and understand the code before any operation. The developers are not liable for any damage to property and personel for misuse.
 - When using PTPJointSpace and PTPLineEEF, make sure to pass in a proper relative velocity or absolute velocity. The relative velocity is a proportional number relVel, such that the robot will move at the relVel multiplied by maximum capacity. Absolution velocity vel is mm/sec.
-- KstServoing::ServoDirectCartesianStart() is the method to start direct servoing. The frequency of this method is 200-1000hz. If your application needs something higher than 1000hz, Kuka FRI may be a better choice.
+- KstServoing::ServoDirectCartesianStart() is the method to start direct servoing. The frequency of direct servoing is 200-1000hz. If your application needs something higher than 1000hz, Kuka FRI may be a better choice.
 - KstServoing::ServoSmartCartesianStart() is the method to start smart servoing. The frequency is 50-200hz.
