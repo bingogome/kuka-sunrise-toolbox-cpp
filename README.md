@@ -1,9 +1,12 @@
 # kuka-sunrise-toolbox-cpp
+![alt text](https://github.com/bingogome/documents/blob/main/kuka-sunrise-toolbox-cpp/system.drawio.png)
 ## Introduction
 
 **kuka-sunrise-toolbox-cpp** is a package developed for easy setup of Kuka IBR iiwa robot using C++. It is a packaged based on KST-Kuka-Sunrise-Toolbox (https://github.com/Modi1987/KST-Kuka-Sunrise-Toolbox), which is intended for Matlab users. The packaged has two parts: the Sunrise cabinet part, and the computer part. The Sunrise cabinet part is based on the original package, but has some modifications and additions. The computer side is based on C++. 
 
 This package can be used as a submodule of your project. Simply include the cpp and hpp files. An example is being developed based on ROS/ROS2 in https://github.com/bingogome/kuka-sunrise-toolbox-cpp-ros. 
+
+It can potentially used in other languages if a built C++ library can be called. Or, simply use other language and follow the same implementation method of this C++ package or the original Matlab package.
 
 ## Dependencies
 
