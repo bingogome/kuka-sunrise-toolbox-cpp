@@ -1,5 +1,7 @@
 #include <kst_servoing.hpp>
 #include <boost/asio.hpp>
+#include <boost/lexical_cast.hpp>
+#include <iomanip>
 
 /*****
  *
@@ -8,7 +10,7 @@
  ****/
 
 // Format the double to string messages
-FormatedDouble2String(double a, int dec)
+std::string FormatedDouble2String(double a, int dec)
 {
 	std::stringstream stream;
     stream << std::fixed << std::setprecision(dec) << a;
@@ -44,12 +46,12 @@ KstServoing::KstServoing(
 	tcp_sock_(io_context)
 {
 	ip_ = robot_ip;
-	tcp::endpoint remote_endpoint = tcp::endpoint(boost::asio::ip::address_v4::from_string(robot_ip), 30001);
 }
 
 // Send connection request to Sunrise Cabinet
 void KstServoing::NetEstablishConnection()
 {
+    tcp::endpoint remote_endpoint = tcp::endpoint(boost::asio::ip::address_v4::from_string(ip_), 30001);
 	tcp_sock_.connect(remote_endpoint);
 
 
