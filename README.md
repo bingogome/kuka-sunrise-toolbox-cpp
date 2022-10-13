@@ -8,6 +8,22 @@ This package can be used as a submodule of your project. Simply include the cpp 
 
 It can potentially used in other languages if a built C++ library can be called. Or, simply use other language and follow the same implementation method of this C++ package or the original Matlab package.
 
+## Citation
+
+Please consider to cite the following paper in which this module was first used in published work.
+
+@inproceedings{liu2022inside,
+  title={Inside-out tracking and projection mapping for robot-assisted transcranial magnetic stimulation},
+  author={Liu, Yihao and Liu, Shuya Joshua and Sefati, Shahriar and Jing, Tian and Kheradmand, Amir and Armand, Mehran},
+  booktitle={Optical Architectures for Displays and Sensing in Augmented, Virtual, and Mixed Reality (AR, VR, MR) III},
+  volume={11931},
+  pages={57--70},
+  year={2022},
+  organization={SPIE}
+}
+
+Liu, Y., Liu, S. J., Sefati, S., Jing, T., Kheradmand, A., & Armand, M. (2022, March). Inside-out tracking and projection mapping for robot-assisted transcranial magnetic stimulation. In Optical Architectures for Displays and Sensing in Augmented, Virtual, and Mixed Reality (AR, VR, MR) III (Vol. 11931, pp. 57-70). SPIE.
+
 ## Dependencies
 
 ## Instruction
