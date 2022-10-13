@@ -10,7 +10,7 @@ It can potentially used in other languages if a built C++ library can be called.
 
 ## Citation
 
-Please consider to cite the following paper in which this module was first used in published work.
+Please consider to cite the following paper in which this module was first used in published work. Please also consider to cite the original repository (https://github.com/Modi1987/KST-Kuka-Sunrise-Toolbox). The publised work of the original KST is documented in that repository.
 
 @inproceedings{liu2022inside,
   title={Inside-out tracking and projection mapping for robot-assisted transcranial magnetic stimulation},
